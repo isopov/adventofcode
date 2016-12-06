@@ -1,8 +1,9 @@
 package day25;
 
-import static day25.Part1.getCode;
 import static day25.Part1.getIndex;
 import static org.junit.Assert.assertEquals;
+
+import java.math.BigDecimal;
 
 import org.junit.Test;
 
@@ -19,9 +20,12 @@ public class Part1Test {
 
 	@Test
 	public void testCode() {
-		assertEquals(20151125L, getCode(1, 1));
 
-		assertEquals(27995004L, getCode(6, 6));
+		assertEquals(BigDecimal.valueOf(128000, 3), BigDecimal.valueOf(1024).multiply(BigDecimal.valueOf(0.125)));
+
+		// assertEquals(20151125L, getCode(1, 1));
+		//
+		// assertEquals(27995004L, getCode(6, 6));
 	}
 
 	// | 1 2 3 4 5 6
