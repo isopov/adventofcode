@@ -3,7 +3,7 @@ package year2017.day11;
 import java.util.Scanner;
 
 public class Part1 {
-
+	// https://www.redblobgames.com/grids/hexagons/
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(Part1.class.getResourceAsStream("input"));
 		String input = scanner.next();
