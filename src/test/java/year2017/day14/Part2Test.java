@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Part2Test {
@@ -17,24 +16,29 @@ public class Part2Test {
 		assertNull(cells[0][2]);
 		assertNotNull(cells[0][3]);
 		assertNull(cells[0][4]);
+		assertNotNull(cells[0][5]);
+		assertNull(cells[0][6]);
+		assertNull(cells[0][7]);
 
 		assertNull(cells[1][0]);
 		assertNotNull(cells[1][1]);
 
 		assertNull(cells[2][2]);
 
+		assertNotNull(cells[7][5]);
+		assertNotNull(cells[7][6]);
+		assertNull(cells[7][7]);
+
 	}
 
-	@Ignore // TODO Sample answer is wrong while my personal answer is right...
 	@Test
 	public void test() {
 		assertEquals(1242, Part2.regions("flqrgnkx"));
 	}
-	
+
 	@Test
 	public void testPersonal() {
 		assertEquals(1139, Part2.regions("nbysizxe"));
 	}
-	
 
 }

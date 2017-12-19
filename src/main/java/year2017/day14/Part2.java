@@ -52,29 +52,18 @@ public class Part2 {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells.length; j++) {
 				if (cells[i][j] != null) {
-					if (i > 0) {
-						if (j > 0) {
-							if (cells[i - 1][j - 1] != null) {
-								merge(cells[i][j], cells[i - 1][j - 1]);
-							}
-						}
-						if (j < 127) {
-							if (cells[i - 1][j + 1] != null) {
-								merge(cells[i][j], cells[i - 1][j + 1]);
-							}
-						}
+					if (i > 0 && cells[i - 1][j] != null) {
+						merge(cells[i][j], cells[i - 1][j]);
 					}
-					if (i < 127) {
-						if (j > 0) {
-							if (cells[i + 1][j - 1] != null) {
-								merge(cells[i][j], cells[i + 1][j - 1]);
-							}
-						}
-						if (j < 127) {
-							if (cells[i + 1][j + 1] != null) {
-								merge(cells[i][j], cells[i + 1][j + 1]);
-							}
-						}
+					if (i < 127 && cells[i + 1][j] != null) {
+						merge(cells[i][j], cells[i + 1][j]);
+					}
+
+					if (j > 0 && cells[i][j - 1] != null) {
+						merge(cells[i][j], cells[i][j - 1]);
+					}
+					if (j < 127 && cells[i][j + 1] != null) {
+						merge(cells[i][j], cells[i][j + 1]);
 					}
 				}
 			}
