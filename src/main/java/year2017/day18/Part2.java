@@ -168,7 +168,12 @@ public class Part2 {
 		private long getVal(String[] split, int index) {
 			long val;
 			if (isChar(split[index])) {
-				val = registers.getIfAbsentPut(split[index].charAt(0), id);
+				char reg = split[index].charAt(0);
+				if(reg == 'p') {
+					val = registers.getIfAbsentPut(reg, id);
+				} else {
+					val = registers.getIfAbsentPut(reg, 0);
+				}
 			} else {
 				val = Integer.valueOf(split[index]);
 			}
