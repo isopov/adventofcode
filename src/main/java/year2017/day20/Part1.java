@@ -7,30 +7,39 @@ import java.util.Scanner;
 
 public class Part1 {
 	public static void main(String[] args) {
+		System.out.println(minDistanceToZero(getInput()));
+	}
 
-		Scanner scanner = new Scanner(Part1.class.getResourceAsStream("input"));
-		List<String> input = new ArrayList<>();
-		while (scanner.hasNext()) {
-			input.add(scanner.nextLine());
+	static List<String> getInput() {
+		try (Scanner scanner = new Scanner(Part1.class.getResourceAsStream("input"))) {
+			List<String> input = new ArrayList<>();
+			while (scanner.hasNext()) {
+				input.add(scanner.nextLine());
+			}
+			return input;
 		}
-
-		System.out.println(minDistanceToZero(input));
 	}
 
 	static int minDistanceToZero(List<String> input) {
+		List<Particle> particles = getParticles(input);
+
+		return particles.stream()
+				.sorted(Comparator.comparing(Particle::getA, Vec.ABS_COMPARATOR)
+						.thenComparing(Comparator.comparing(Particle::getV, Vec.ABS_COMPARATOR))
+						.thenComparing(Comparator.comparing(Particle::getP, Vec.ABS_COMPARATOR)))
+				.findFirst().get().id;
+	}
+
+	static List<Particle> getParticles(List<String> input) {
 		List<Particle> particles = new ArrayList<>(input.size());
 		for (int i = 0; i < input.size(); i++) {
 			particles.add(new Particle(i, input.get(i)));
 		}
-
-		return particles.stream().sorted(
-				Comparator.comparing(Particle::getAbsA)
-						.thenComparing(Comparator.comparing(Particle::getAbsV))
-						.thenComparing(Comparator.comparing(Particle::getAbsP)))
-				.findFirst().get().id;
+		return particles;
 	}
 
 	static class Particle {
+
 		final int id;
 		final Vec p, v, a;
 
@@ -42,25 +51,36 @@ public class Part1 {
 			a = Vec.fromString(split[5]);
 		}
 
+		public void step() {
+			v.plus(a);
+			p.plus(v);
+		}
+
 		public int getId() {
 			return id;
 		}
 
-		public int getAbsP() {
-			return p.abs();
+		public Vec getV() {
+			return v;
 		}
 
-		public int getAbsV() {
-			return v.abs();
+		public Vec getP() {
+			return p;
 		}
 
-		public int getAbsA() {
-			return a.abs();
+		public Vec getA() {
+			return a;
 		}
 
+		@Override
+		public String toString() {
+			return String.valueOf(id);
+		}
 	}
 
 	static class Vec {
+		static final Comparator<Vec> ABS_COMPARATOR = Comparator.comparing(Vec::abs);
+
 		private int x, y, z;
 
 		public Vec(int x, int y, int z) {
@@ -69,16 +89,66 @@ public class Part1 {
 			this.z = z;
 		}
 
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getZ() {
+			return z;
+		}
+
 		int abs() {
 			return Math.abs(x) + Math.abs(y) + Math.abs(z);
 		}
 
+		void plus(Vec other) {
+			x = Math.addExact(x, other.x);
+			y = Math.addExact(y, other.y);
+			z = Math.addExact(z, other.z);
+		}
+
 		static Vec fromString(String line) {
 			String[] split = line.split(",");
-			return new Vec(
-					Integer.valueOf(split[0].trim()),
-					Integer.valueOf(split[1].trim()),
+			return new Vec(Integer.valueOf(split[0].trim()), Integer.valueOf(split[1].trim()),
 					Integer.valueOf(split[2].trim()));
+		}
+
+		//DANGER! equals/hashCode for mutable state
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + x;
+			result = prime * result + y;
+			result = prime * result + z;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Vec other = (Vec) obj;
+			if (x != other.x)
+				return false;
+			if (y != other.y)
+				return false;
+			if (z != other.z)
+				return false;
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "<" + x + "," + y + "," + z + ">";
 		}
 	}
 
